@@ -40,7 +40,6 @@ public final class Menu extends JMenuBar {
 	 * saved a results output.
 	 */
 	private static final JFileChooser SAVE_AS = new JFileChooser();
-	// TODO make the save output more verbose
 
 	/**
 	 * A list of buttons in this Menu that should be disabled while the user is

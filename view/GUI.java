@@ -37,58 +37,76 @@ public final class GUI {
 	 */
 	public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit()
 			.getScreenSize();
-	
+
 	/**
 	 * The filename for serializing the settings.
 	 */
 	private static final String SETTINGS_SAVE_FILE = "settings.romf";
-	
+
 	/**
 	 * The filename for the icon image for the application.
 	 */
 	private static final String ICON_FILE = "clover.gif";
-	
+
 	/**
 	 * The button text for starting an analysis.
 	 */
 	private static final String CALCULATE = "Calculate";
-	
+
 	/**
 	 * The button text for returning to the settings view from the results view.
 	 */
 	private static final String BACK = "Back";
-	
+
 	/**
 	 * The JFrame for the application.
 	 */
 	private final JFrame myFrame;
-	
+
 	/**
 	 * The global settings.
 	 */
 	private Settings mySettings;
+
+	/**
+	 * A reference to the center sub panel of the GUI.
+	 */
 	private final CenterPanel myCenterPanel;
+
+	/**
+	 * A reference to the menu.
+	 */
 	private final Menu myMenu;
 
+	/**
+	 * Constructs the GUI, reading in the serialized settings file, and
+	 * initalizes the various objects.
+	 */
 	private GUI() {
 		myFrame = new JFrame();
 		try {
+			// deserialize
 			final FileInputStream fileIn = new FileInputStream(
 					SETTINGS_SAVE_FILE);
 			final ObjectInputStream in = new ObjectInputStream(fileIn);
 			mySettings = (Settings) in.readObject();
 			in.close();
 			fileIn.close();
-		} catch (Exception e) {
+		} catch (final Exception e) {
+			// if there was a problem, just use the default settings
 			mySettings = Settings.DEFAULT;
 		}
 		myCenterPanel = new CenterPanel(mySettings);
 		myMenu = new Menu(myFrame, mySettings);
 	}
 
+	/**
+	 * Populates the JFrame and defines it default behavior.
+	 */
 	private void start() {
 		myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		myFrame.addWindowListener(new WindowAdapter() {
+			// on close, serialize the settings
 			public void windowClosing(final WindowEvent theEvent) {
 				try {
 					final FileOutputStream fileOut = new FileOutputStream(
@@ -98,7 +116,7 @@ public final class GUI {
 					out.writeObject(mySettings);
 					out.close();
 					fileOut.close();
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					e.printStackTrace();
 				}
 			}
@@ -129,7 +147,13 @@ public final class GUI {
 		myFrame.setLocation(extraHorizontalSpace / 2, extraVerticalSpace / 2);
 	}
 
-	public static void main(String[] args) {
+	/**
+	 * Main start method. Thread safe.
+	 * 
+	 * @param args
+	 *            unused command line arguments
+	 */
+	public static void main(final String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -139,42 +163,78 @@ public final class GUI {
 		});
 	}
 
+	/**
+	 * This class is the ActionListener for when the user clicks the 'Calculate'
+	 * or 'Back' button at the bottom of the application. This button cues the
+	 * analysis of the selected parameters.
+	 * 
+	 * @author Robert
+	 */
 	private class SwitchButtonListener implements ActionListener {
 
+		/**
+		 * The results of the last run are always saved to a file for use away
+		 * from the computer. This is the filename for that file.
+		 */
 		private static final String SAVE_FILE = "last_results.txt";
 
-		public void actionPerformed(final ActionEvent theEvent) {
+		/**
+		 * When the button is clicked, this method is called. If we were viewing
+		 * the configuration panel, run the analysis, switch the the results
+		 * view, and then display the results. Else, go back to the
+		 * configuration panel.
+		 * 
+		 * @param event
+		 *            the action event. Used to get a reference to the button
+		 */
+		public void actionPerformed(final ActionEvent event) {
 			try {
+				// user input validation
 				if (!mySettings.anAlgorithmSelected()) {
 					throw new NullPointerException();
 				}
-				final JButton button = (JButton) theEvent.getSource();
+				final JButton button = (JButton) event.getSource();
 				if (button.getText().equals(CALCULATE)) {
+					// we were on the settings view
+					// compute results
 					final String results = Calculator.getResult(mySettings);
-					saveToFile(results);
+					// save and display
+					saveToFile(mySettings.toString() + "\n\n" + results);
 					myCenterPanel.setResultsText(results);
 					button.setText(BACK);
 					myMenu.setButtonsEnabled(false);
 				} else {
+					// go back to the settings display
 					button.setText(CALCULATE);
 					myMenu.setButtonsEnabled(true);
 				}
+				// switch views
 				myCenterPanel.nextCard();
-			} catch (FileNotFoundException e) {
+			} catch (final FileNotFoundException e) {
+				// this is only thrown if the database file can't be read
+				// TODO is the database read everytime? Fix that silly
 				JOptionPane.showMessageDialog(myFrame,
 						"Database File Not Found!", "Error",
 						JOptionPane.ERROR_MESSAGE);
-			} catch (NullPointerException e) {
+			} catch (final NullPointerException e) {
+				// this is only thrown if the user doesn't select an algorithm
 				JOptionPane.showMessageDialog(myFrame,
 						"Select the parameters first", "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
-		private void saveToFile(final String theResults) {
+		/**
+		 * Saves the given text to the last results save file. Error handling is
+		 * done inside this method.
+		 * 
+		 * @param text
+		 *            the text to save to the file
+		 */
+		private void saveToFile(final String text) {
 			try {
 				final PrintStream out = new PrintStream(SAVE_FILE);
-				out.print(theResults);
+				out.print(text);
 				out.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
