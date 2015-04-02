@@ -19,18 +19,21 @@ import javax.swing.JTextField;
 import lotto.Lottery;
 import controller.Settings;
 
+/**
+ * 
+ * 
+ * @author Robert
+ */
 public final class SettingsPanel extends JPanel {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -3129612690864373781L;
+    
     private static final int VERT_SPACING = 15;
 
-    public SettingsPanel(final Settings theSettings) {
+    public SettingsPanel(final Settings settings) {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setup(theSettings);
+        setup(settings);
     }
 
     private void setup(final Settings theSettings) {
