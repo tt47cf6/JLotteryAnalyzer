@@ -25,7 +25,7 @@ public final class Settings implements Serializable {
     public static final Settings DEFAULT = getDefaultSettings();
 
     public static final String SELECTED_GAME = "Game";
-    public static final String ADD_RESULTS = "Add Results";
+    public static final String INCLUSIVE = "Add Results";
     public static final String HOT_SELECTED = "Hot Numbers";
     public static final String COLD_SELECTED = "Cold Numbers";
     public static final String PERIODIC_SELECTED = "Periodic Numbers";
@@ -99,7 +99,7 @@ public final class Settings implements Serializable {
         }
         builder.append(NEWLINE);
         builder.append("Algorithms Should:   ");
-        if ((Boolean) get(ADD_RESULTS)) {
+        if ((Boolean) get(INCLUSIVE)) {
             builder.append("Add");
         } else {
             builder.append("Subtract");
@@ -126,7 +126,7 @@ public final class Settings implements Serializable {
     private static Settings getDefaultSettings() {
         final Settings defaultSettings = new Settings();
         defaultSettings.put(SELECTED_GAME, Lottery.WA_LOTTO);
-        defaultSettings.put(ADD_RESULTS, true);
+        defaultSettings.put(INCLUSIVE, true);
         defaultSettings.put(HOT_SELECTED, false);
         defaultSettings.put(COLD_SELECTED, false);
         defaultSettings.put(PERIODIC_SELECTED, false);

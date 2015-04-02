@@ -57,7 +57,7 @@ public final class Calculator {
         if ((Boolean) theSettings.get(Settings.PERIODIC_SELECTED)) {
             result.addAll(Algorithims.getPeriodicNumbers(theSettings.selectedGame()));
         }
-        if (!(Boolean) theSettings.get(Settings.ADD_RESULTS)) {
+        if (!(Boolean) theSettings.get(Settings.INCLUSIVE)) {
             Collections.sort(result);
             for (int i = 0; i < result.size() - 1; i++) {
                 if (result.get(i + 1) != result.get(i)) {
