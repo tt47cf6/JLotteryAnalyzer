@@ -11,6 +11,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -21,9 +22,9 @@ import controller.Settings;
 /**
  * This Panel is the main panel that users interact with to specify basic
  * behavior of a analysis. It is made up of several different sub panels, each
- * with their own respective behavior and settings to change. When this object is
- * first created, all selections are made to reflect the values already in the
- * settings object. This allows for persistence between runs.
+ * with their own respective behavior and settings to change. When this object
+ * is first created, all selections are made to reflect the values already in
+ * the settings object. This allows for persistence between runs.
  * 
  * @author Robert
  */
@@ -58,15 +59,15 @@ public final class SettingsPanel extends JPanel {
 		// game chooser
 		add(createGameChooserPanel(settings));
 		add(Box.createVerticalStrut(VERT_SPACING));
-		
+
 		// number of draws
 		add(createDrawChooserPanel(settings));
 		add(Box.createVerticalStrut(VERT_SPACING));
-		
+
 		// inclusive or exclusive selection
 		add(createInclusiveExclusivePanel(settings));
 		add(Box.createVerticalStrut(VERT_SPACING));
-		
+
 		// various algorithms
 		add(createAlgorithmsPanel(settings));
 
@@ -152,10 +153,14 @@ public final class SettingsPanel extends JPanel {
 
 			@Override
 			public void focusLost(final FocusEvent e) {
-				final int input = util.NumberUtils.parseInteger(inputField
-						.getText());
-				inputField.setText("" + input);
-				settings.put(Settings.COUNT, input);
+				try {
+					final int input = Integer.parseInt(inputField.getText());
+					inputField.setText("" + input);
+					settings.put(Settings.COUNT, input);
+				} catch (final NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Bad Input", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		subPanel.add(inputField);
@@ -177,7 +182,7 @@ public final class SettingsPanel extends JPanel {
 		final JPanel panel = new JPanel(new GridLayout(3, 1));
 		panel.add(new JLabel("Algorithms Should", JLabel.CENTER));
 		final ButtonGroup group = new ButtonGroup();
-		
+
 		// inclusive button
 		final JRadioButton inclusiveButton = new JRadioButton("Be Inclusive");
 		inclusiveButton
@@ -192,7 +197,7 @@ public final class SettingsPanel extends JPanel {
 		inclusiveButton.setSelected((Boolean) settings.get(Settings.INCLUSIVE));
 		group.add(inclusiveButton);
 		panel.add(inclusiveButton);
-		
+
 		// exclusive button
 		final JRadioButton exclusiveButton = new JRadioButton("Be exclusive");
 		exclusiveButton
@@ -205,36 +210,37 @@ public final class SettingsPanel extends JPanel {
 		});
 		// set inital state
 		exclusiveButton.setSelected(!inclusiveButton.isSelected());
-		
+
 		group.add(exclusiveButton);
 		panel.add(exclusiveButton);
 		return panel;
 	}
 
 	/**
-	 * This method creates a panel to select which algorithm(s) should be
-	 * used in the analysis. Multiple algorithms may be selected, hence the
-	 * use of checkboxes.
+	 * This method creates a panel to select which algorithm(s) should be used
+	 * in the analysis. Multiple algorithms may be selected, hence the use of
+	 * checkboxes.
 	 * 
-	 * @param settings the global settings
+	 * @param settings
+	 *            the global settings
 	 * @return a panel to select which algorithms should be analyzed
 	 */
 	private static JPanel createAlgorithmsPanel(final Settings settings) {
 		final JPanel algorithms = new JPanel(new GridLayout(4, 1));
 		algorithms.add(new JLabel("Algorithms", JLabel.CENTER));
-		
+
 		// hot numbers
 		final JCheckBox hotButton = createAlgorithmsBox(settings,
 				Settings.HOT_SELECTED);
 		hotButton.setToolTipText("Numbers that are frequently drawn.");
 		algorithms.add(hotButton);
-		
+
 		// cold numbers
 		final JCheckBox coldButton = createAlgorithmsBox(settings,
 				Settings.COLD_SELECTED);
 		coldButton.setToolTipText("Numbers that are not frequently drawn.");
 		algorithms.add(coldButton);
-		
+
 		// periodic numbers
 		final JCheckBox perdButton = createAlgorithmsBox(settings,
 				Settings.PERIODIC_SELECTED);
@@ -243,17 +249,19 @@ public final class SettingsPanel extends JPanel {
 						+ " number of drawings. This goes back that far and returns"
 						+ " those numbers.");
 		algorithms.add(perdButton);
-		
+
 		return algorithms;
 	}
 
 	/**
-	 * A helper method to create a single checkbox for a given algorithm, that displays
-	 * the given text. This text must be the key for the settings object for the
-	 * respective game.
+	 * A helper method to create a single checkbox for a given algorithm, that
+	 * displays the given text. This text must be the key for the settings
+	 * object for the respective game.
 	 * 
-	 * @param settings the global settings object
-	 * @param text the text to dispaly and key to the settings
+	 * @param settings
+	 *            the global settings object
+	 * @param text
+	 *            the text to dispaly and key to the settings
 	 * @return a check box to select an algorithm
 	 */
 	private static JCheckBox createAlgorithmsBox(final Settings settings,

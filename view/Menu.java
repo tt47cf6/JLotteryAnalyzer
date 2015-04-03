@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
@@ -204,8 +205,12 @@ public final class Menu extends JMenuBar {
 						.get(Settings.PAID_OVER_AMOUNT);
 				final String input = JOptionPane.showInputDialog(frame,
 						"Only use draws that paid out above:", previous);
-				settings.put(Settings.PAID_OVER_AMOUNT,
-						util.NumberUtils.parseLong(input));
+				try {
+					settings.put(Settings.PAID_OVER_AMOUNT,
+							Long.parseLong(input));
+				} catch (final NumberFormatException ex) {
+					JOptionPane.showMessageDialog(frame, "Bad input", "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 
@@ -219,16 +224,19 @@ public final class Menu extends JMenuBar {
 			public void actionPerformed(final ActionEvent e) {
 				final Set<Integer> previousNums = (Set<Integer>) settings
 						.get(Settings.CUSTOM_NUMBERS);
-				final String previousInput = util.NumberUtils
-						.setAsString(previousNums);
+				final StringBuilder previousInput = new StringBuilder();
+				for (int n : previousNums) {
+					previousInput.append(n);
+					previousInput.append(' ');
+				}
 				final String input = JOptionPane
 						.showInputDialog(
 								frame,
 								"Always include these numbers: (Separate with a space)",
-								previousInput);
+								previousInput.toString());
 				if (input != null) {
 					settings.put(Settings.CUSTOM_NUMBERS,
-							util.NumberUtils.parseCustomNumbers(input));
+							parseCustomNumbers(input));
 				}
 			}
 		});
@@ -243,11 +251,11 @@ public final class Menu extends JMenuBar {
 	}
 
 	/**
-	 * This method creates the help menu with an option to view
-	 * either text contained in the help file, or online help via the
-	 * GitHub wiki.
+	 * This method creates the help menu with an option to view either text
+	 * contained in the help file, or online help via the GitHub wiki.
 	 * 
-	 * @param frame a reference to the GUI
+	 * @param frame
+	 *            a reference to the GUI
 	 * @return the help menu
 	 */
 	private JMenu createHelpMenu(final JFrame frame) {
@@ -269,5 +277,29 @@ public final class Menu extends JMenuBar {
 		helpMenu.add(helpButton);
 		return helpMenu;
 	}
+	
+	/**
+	 * Parses out the custom numbers entered by the user. Only positive numbers are
+	 * accepted in the final output. Errors are silent.
+	 * 
+	 * @param input the string to parse
+	 * @return a set of entered integers, all positive
+	 */
+    private static Set<Integer> parseCustomNumbers(final String input) {
+        final String[] split = input.split(" ");
+        final Set<Integer> result = new HashSet<Integer>();
+        for (String number : split) {
+        	try {
+        		// make sure no negative numbers get in
+        		result.add(Math.max(0, Integer.parseInt(number)));
+        	} catch(final NumberFormatException e) {
+        		
+        	}
+        }
+        // remove 0's caught from negative numbers above
+        result.remove(0);
+        return result;
+    }
+    
 
 }

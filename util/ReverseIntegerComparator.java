@@ -4,11 +4,9 @@ package util;
 import java.util.Comparator;
 
 /**
- * This class is a comparator for integers that reverses their ordering. It is
- * used by the GetDraws class to put most frequent numbers first in the TreeSet.
+ * This class is a comparator for integers that reverses their ordering. 
  * 
- * @author Robert Ogden
- * @version 2.0
+ * @author Robert
  */
 public final class ReverseIntegerComparator implements Comparator<Integer> {
 

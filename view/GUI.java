@@ -200,7 +200,7 @@ public final class GUI {
 					final String results = Calculator.getResult(mySettings);
 					// save and display
 					saveToFile(mySettings.toString() + "\n\n" + results);
-					myCenterPanel.setResultsText(results);
+					myCenterPanel.setResultsText(mySettings.toString() + "\n\n" + results);
 					button.setText(BACK);
 					myMenu.setButtonsEnabled(false);
 				} else {

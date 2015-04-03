@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import util.ArrayUtils;
-
 /**
  * This class recursively generates a wheeling of a given size of given myNumberSet.
  * 
@@ -203,14 +201,33 @@ public final class Combinations {
         final StringBuilder out = new StringBuilder(50);
         out.append("Numbers:    ");
         out.append(MS_NEWLINE);
-        out.append(ArrayUtils.sixNumbersPerLine(myNumbersArray)); // used to print set
+        out.append(sixNumbersPerLine(myNumbersArray)); // used to print set
         if (myBonusBallFlag) {
             out.append(MS_NEWLINE);
             out.append(MS_NEWLINE);
             out.append("BonusBalls: ");
             out.append(MS_NEWLINE);
-            out.append(ArrayUtils.sixNumbersPerLine(myBonusBallArray));
+            out.append(sixNumbersPerLine(myBonusBallArray));
         }
         return out.toString();
+    }
+    
+    public static String sixNumbersPerLine(final int[] arr) {
+        final StringBuilder builder = new StringBuilder();
+        if (arr.length > 0) {
+            int i = 0;
+            while (i < arr.length - 1) {
+                builder.append(arr[i]);
+                builder.append(", ");
+                i++;
+                if (i % 6 == 0) {
+                    builder.append('\n');
+                }
+            }
+            builder.append(arr[i]);
+        } else {
+            builder.append("none");
+        }
+        return builder.toString();
     }
 }

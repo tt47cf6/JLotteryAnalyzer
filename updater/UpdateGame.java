@@ -19,7 +19,6 @@ import java.util.TreeSet;
 import lotto.AbstractBonusBall;
 import lotto.Lottery;
 import util.DrawStringComparator;
-import util.NumberUtils;
 import analyzer.Draw;
 
 /**
@@ -79,19 +78,17 @@ public final class UpdateGame {
                     final String date = Draw.parseDate(line);
                     scan.nextLine();
                     final String numberLine = scan.nextLine().replace('-', ' ');
-                    final int[] numbers =
-                                    NumberUtils.parseNumbers(numberLine.substring(0, myGame
+                    final int[] numbers = parseNumbers(numberLine.substring(0, myGame
                                                     .getNumberOfBalls() * 3 - 1));
-                    final List<String> jackpotLine = NumberUtils.delimit('$', scan.nextLine());
+                    final List<String> jackpotLine = delimit("$", scan.nextLine());
                     final boolean jackpot =
                                     jackpotLine.get(jackpotLine.size() - 1).length() > 2;
                     String totalLine = scan.nextLine();
                     while (!totalLine.contains("Totals")) {
                         totalLine = scan.nextLine();
                     }
-                    final List<String> totalList = NumberUtils.delimit('$', totalLine);
-                    final long payout =
-                                    NumberUtils.parseCurrency(totalList.get(totalList.size() - 1));
+                    final List<String> totalList = delimit("$", totalLine);
+                    final long payout = parseCurrency(totalList.get(totalList.size() - 1));
                     if (myGame.hasBonusBall()) {
                         final int startIndex = numberLine.indexOf('=') + 1;
                         final int endIndex = startIndex + 2;
@@ -136,5 +133,37 @@ public final class UpdateGame {
         final URL update = new URL(url);
         final URLConnection conn = update.openConnection();
         return new BufferedReader(new InputStreamReader(conn.getInputStream()));
+    }
+    
+    private static long parseCurrency(final String theText) {
+        String temp = theText;
+        if (temp.startsWith("$")) {
+            temp = temp.substring(1);
+        }
+        while (temp.contains(",")) {
+            final int index = temp.indexOf(',');
+            temp = temp.substring(0, index) + temp.substring(index + 1);
+        }
+        return Long.parseLong(temp);
+    }
+    
+    private static int[] parseNumbers(final String theText) {
+        final int[] result = new int[(theText.length() + 1) / 3];
+        final Scanner scan = new Scanner(theText);
+        int i = 0;
+        while (scan.hasNextInt()) {
+            result[i] = scan.nextInt();
+            i++;
+        }
+        return result;
+    }
+    
+    private static List<String> delimit(final String regex, final String text) {
+    	final String[] split = text.split(regex);
+    	final List<String> result = new ArrayList<String>();
+    	for (String element : split) {
+    		result.add(element);
+    	}
+    	return result;
     }
 }
