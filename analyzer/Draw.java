@@ -163,6 +163,7 @@ public final class Draw {
         return myBonusBallRange;
     }
 
+    // TODO continue reformatting db
     /**
      * This method is used primarily for updating.
      * 
