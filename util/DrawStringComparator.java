@@ -2,6 +2,8 @@ package util;
 
 import java.util.Comparator;
 
+import analyzer.Draw;
+
 /**
  * This class compares two dates that are represented as strings according to
  * the pattern in the database files. A simple inner Date class is used to avoid
@@ -15,19 +17,16 @@ public final class DrawStringComparator implements Comparator<String> {
 
 	@Override
 	public int compare(final String first, final String second) {
-		System.out.println(first);
-		System.out.println(first.substring(0, DATE_LENGTH));
 		final Date firstDate = getDate(first.substring(0, DATE_LENGTH));
 		final Date secondDate = getDate(second.substring(0, DATE_LENGTH));
 		return firstDate.compareTo(secondDate);
 	}
 
 	private Date getDate(final String in) {
-		final int month = getMonth(in.substring(0, in.indexOf(' ')));
-		final int day = Integer.parseInt(in.substring(in.indexOf(' ') + 1,
-				in.lastIndexOf(' ')));
-		final int year = Integer
-				.parseInt(in.substring(in.lastIndexOf(' ') + 1));
+		final String[] split = in.split(Draw.DELIMITER);
+		final int month = getMonth(split[0]);
+		final int day = Integer.parseInt(split[1]);
+		final int year = Integer.parseInt(split[2]);
 		return new Date(month, day, year);
 	}
 
