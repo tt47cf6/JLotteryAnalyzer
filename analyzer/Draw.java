@@ -241,7 +241,6 @@ public final class Draw {
 		return Long.parseLong(result);
 	}
 
-	// TODO add backwards compliance code to accept dbs with spaces
 	public static String parseDate(final String in) {
 		final String[] split = in.split(" ");
 		final String month = split[1].toUpperCase();

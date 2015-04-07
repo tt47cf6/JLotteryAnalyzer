@@ -13,33 +13,51 @@ import analyzer.Draw;
  */
 public final class DrawStringComparator implements Comparator<String> {
 
-	private static final int DATE_LENGTH = 11;
-
-	// TODO implement exception handling in updater
+	/**
+	 * Compares two lines of a draw file where the first three fields are the
+	 * date of the object. The date is expected to be in the given format of the
+	 * Draw toString() method. This comparator puts most recent dates first in a
+	 * sorted list.
+	 * 
+	 * @param first
+	 *            the first date to compare
+	 * @param second
+	 *            the second date to compare
+	 */
 	@Override
 	public int compare(final String first, final String second) {
-		try {
-			final Date firstDate = getDate(first.substring(0, DATE_LENGTH));
-			final Date secondDate = getDate(second.substring(0, DATE_LENGTH));
-			return firstDate.compareTo(secondDate);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException();
-		}
-
+		final Date firstDate = getDate(first);
+		final Date secondDate = getDate(second);
+		return firstDate.compareTo(secondDate);
 	}
 
+	// TODO clean up Draw toString() to use String.format()
+
+	/**
+	 * Parses out a date object given the input string.
+	 * 
+	 * @param in
+	 *            input string of the draw in the expected pattern
+	 * @return a date object to compare
+	 */
 	private Date getDate(final String in) {
-		final String tabDelimited = in.replace(' ', '\t');
-		final String[] split = tabDelimited.split(Draw.DELIMITER);
+		final String[] split = in.split(Draw.DELIMITER);
 		final int month = getMonth(split[0]);
 		final int day = Integer.parseInt(split[1]);
 		final int year = Integer.parseInt(split[2]);
 		return new Date(month, day, year);
 	}
 
-	private static int getMonth(final String theMonth) {
-		switch (theMonth) {
+	/**
+	 * A helper method that returns the integer of the String-represented given
+	 * month.
+	 * 
+	 * @param month
+	 *            the month to represent as an int
+	 * @return the int represented by the given string
+	 */
+	private static int getMonth(final String month) {
+		switch (month) {
 		case ("JAN"):
 			return 1;
 		case ("FEB"):
@@ -65,23 +83,55 @@ public final class DrawStringComparator implements Comparator<String> {
 		case ("DEC"):
 			return 12;
 		}
-		throw new IllegalStateException("Invlaid Month: " + theMonth);
+		throw new IllegalStateException("Invlaid Month: " + month);
 	}
 
-	private class Date {
+	/**
+	 * A simple Date object to compare two dates.
+	 * 
+	 * @author Robert
+	 */
+	private class Date implements Comparable<Date> {
 
+		/**
+		 * The month. Range: [1, 12]
+		 */
 		private final int myMonth;
 
+		/**
+		 * The date. Range: [1, 31]
+		 */
 		private final int myDay;
 
+		/**
+		 * The year.
+		 */
 		private final int myYear;
 
-		public Date(final int theMonth, final int theDay, final int theYear) {
-			myMonth = theMonth;
-			myDay = theDay;
-			myYear = theYear;
+		/**
+		 * A simple constructor to set the fields to their given values.
+		 * 
+		 * @param month
+		 *            month
+		 * @param day
+		 *            day
+		 * @param year
+		 *            year
+		 */
+		public Date(final int month, final int day, final int year) {
+			myMonth = month;
+			myDay = day;
+			myYear = year;
 		}
 
+		/**
+		 * Compare another Date with this. In the sorted list, more recent dates
+		 * will be placed first.
+		 * 
+		 * @param other
+		 *            the other Date to compare to
+		 */
+		@Override
 		public int compareTo(final Date other) {
 			if (myYear == other.myYear) {
 				if (myMonth == other.myMonth) {

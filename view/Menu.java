@@ -3,13 +3,11 @@ package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -21,7 +19,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import updater.Update;
-import util.Directory;
 import util.TextFilter;
 import controller.Calculator;
 import controller.Settings;
@@ -104,7 +101,7 @@ public final class Menu extends JMenuBar {
 						// correct file name from user input
 						String filename = SAVE_AS.getSelectedFile()
 								.getAbsolutePath();
-						filename = Directory.removeFileExtension(filename)
+						filename = removeFileExtension(filename)
 								+ ".txt";
 						// output results
 						final PrintStream out = new PrintStream(filename);
@@ -264,14 +261,7 @@ public final class Menu extends JMenuBar {
 		// TODO add button to go to GitHub wiki
 		helpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
-				String text;
-				try {
-					final Scanner in = new Scanner(new File("help.help"));
-					text = Directory.textFileAsString(in);
-				} catch (FileNotFoundException e1) {
-					text = "Help file not found!";
-				}
-				JOptionPane.showMessageDialog(frame, text);
+				
 			}
 		});
 		helpMenu.add(helpButton);
@@ -300,6 +290,20 @@ public final class Menu extends JMenuBar {
         result.remove(0);
         return result;
     }
+    
+    /**
+     * Remove the file extension from the given file name, if there is an extension. 
+     * 
+     * @param file the file name possible with an extension
+     * @return filename without an extension
+     */
+	public static String removeFileExtension(final String file) {
+	    if (file.contains(".")) {
+	        final int indexOfExt = file.lastIndexOf('.');
+	        return file.substring(0, indexOfExt);
+		}
+		return file;
+	}
     
 
 }

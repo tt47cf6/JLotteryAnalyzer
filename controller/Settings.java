@@ -77,7 +77,6 @@ public final class Settings implements Serializable {
     
     @Override
     public String toString() {
-    	// TODO make this prettier
         final StringBuilder builder = new StringBuilder();
         builder.append("Game Selected:       ");
         builder.append(get(SELECTED_GAME));
