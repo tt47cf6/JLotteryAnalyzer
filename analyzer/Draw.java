@@ -186,7 +186,7 @@ public final class Draw {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder out = new StringBuilder(75);
+		final StringBuilder out = new StringBuilder();
 		out.append(myDate);
 		out.append(DELIMITER);
 		for (final int num : myNumbers) {
@@ -196,7 +196,6 @@ public final class Draw {
 			out.append(num);
 			out.append(DELIMITER);
 		}
-		out.append(DELIMITER);
 		if (myBonusBall > 0) {
 			out.append(myBonusBall);
 			out.append(DELIMITER);
@@ -206,7 +205,6 @@ public final class Draw {
 		} else {
 			out.append("FALSE");
 		}
-		out.append(DELIMITER);
 		out.append(DELIMITER);
 		out.append(myPayout);
 		out.append(DELIMITER);
@@ -243,12 +241,12 @@ public final class Draw {
 		return Long.parseLong(result);
 	}
 
+	// TODO add backwards compliance code to accept dbs with spaces
 	public static String parseDate(final String in) {
-
-		String result = in;
-		result = result.substring(result.indexOf(" ") + 1);
-		result = result.substring(0, result.indexOf(","))
-				+ result.substring(result.indexOf(",") + 1);
-		return result;
+		final String[] split = in.split(" ");
+		final String month = split[1].toUpperCase();
+		final String day = split[2].substring(0, 2);
+		final String year = split[3];
+		return month + '\t' + day + '\t' + year;
 	}
 }

@@ -15,15 +15,23 @@ public final class DrawStringComparator implements Comparator<String> {
 
 	private static final int DATE_LENGTH = 11;
 
+	// TODO implement exception handling in updater
 	@Override
 	public int compare(final String first, final String second) {
-		final Date firstDate = getDate(first.substring(0, DATE_LENGTH));
-		final Date secondDate = getDate(second.substring(0, DATE_LENGTH));
-		return firstDate.compareTo(secondDate);
+		try {
+			final Date firstDate = getDate(first.substring(0, DATE_LENGTH));
+			final Date secondDate = getDate(second.substring(0, DATE_LENGTH));
+			return firstDate.compareTo(secondDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException();
+		}
+
 	}
 
 	private Date getDate(final String in) {
-		final String[] split = in.split(Draw.DELIMITER);
+		final String tabDelimited = in.replace(' ', '\t');
+		final String[] split = tabDelimited.split(Draw.DELIMITER);
 		final int month = getMonth(split[0]);
 		final int day = Integer.parseInt(split[1]);
 		final int year = Integer.parseInt(split[2]);

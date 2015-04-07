@@ -46,12 +46,15 @@ public final class UpdateGame {
     }
 
     private void outputToFile(final Set<String> allLines) throws FileNotFoundException {
-        final PrintStream out = new PrintStream(myGame.dataFile());
         final Set<String> sorted = new TreeSet<String>(new DrawStringComparator());
+        System.out.println("Sorting");
         sorted.addAll(allLines);
+        System.out.println("sorted");
+        final PrintStream out = new PrintStream(myGame.dataFile());
         for (String line : sorted) {
             out.println(line);
         }
+        out.close();
     }
 
     private void addNewDraws(final Set<String> allLines, final List<Draw> newDraws) {
