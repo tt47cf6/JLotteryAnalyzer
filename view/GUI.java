@@ -193,6 +193,8 @@ public final class GUI {
 				if (!mySettings.anAlgorithmSelected()) {
 					throw new NullPointerException();
 				}
+				// switch views
+				myCenterPanel.nextCard();
 				final JButton button = (JButton) event.getSource();
 				if (button.getText().equals(CALCULATE)) {
 					// we were on the settings view
@@ -203,13 +205,12 @@ public final class GUI {
 					myCenterPanel.setResultsText(mySettings.toString() + "\n\n" + results);
 					button.setText(BACK);
 					myMenu.setButtonsEnabled(false);
+					myCenterPanel.repaint();
 				} else {
 					// go back to the settings display
 					button.setText(CALCULATE);
 					myMenu.setButtonsEnabled(true);
 				}
-				// switch views
-				myCenterPanel.nextCard();
 			} catch (final FileNotFoundException e) {
 				// this is only thrown if the database file can't be read
 				// TODO is the database read everytime? Fix that silly

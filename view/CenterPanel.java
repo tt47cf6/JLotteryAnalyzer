@@ -68,7 +68,7 @@ public final class CenterPanel extends JPanel {
 		/**
 		 * Default text to show until the panel is updated.
 		 */
-		public static final String START_TEXT = "ERROR!";
+		public static final String START_TEXT = "Computing...";
 
 		/**
 		 * A reference to the JTextArea element.

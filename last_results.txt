@@ -1,3 +1,15 @@
-13 19 26 27 28 39 
+Game Selected:       WA Lotto
+Algorithms Selected: 
+	Hot Numbers
+Algorithms Should:   Add
+Draws to Count:      0
+Your Lucky numbers:  []
 
 
+13 17 19 26 27 28 
+13 17 19 26 27 33 
+13 17 19 26 28 33 
+13 17 19 27 28 33 
+13 17 26 27 28 33 
+13 19 26 27 28 33 
+17 19 26 27 28 33 

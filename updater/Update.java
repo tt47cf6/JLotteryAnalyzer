@@ -28,6 +28,7 @@ import lotto.MegaMillions;
 import lotto.PowerBall;
 import lotto.WALotto;
 
+// TODO not working anymore
 public final class Update extends SwingWorker<Integer, String> {
     
     /** The screen size of the user's machine. Used for centering the window. */
