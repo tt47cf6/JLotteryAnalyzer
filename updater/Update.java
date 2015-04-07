@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +29,6 @@ import lotto.MegaMillions;
 import lotto.PowerBall;
 import lotto.WALotto;
 
-// TODO not working anymore
 public final class Update extends SwingWorker<Integer, String> {
     
     /** The screen size of the user's machine. Used for centering the window. */
@@ -177,11 +177,8 @@ public final class Update extends SwingWorker<Integer, String> {
         final Set<Integer> result = new HashSet<Integer>();
         final Scanner in = new Scanner(new File(game.dataFile()));
         while (in.hasNextLine()) {
-            final String line = in.nextLine();
-            final Scanner lineScan = new Scanner(line);
-            lineScan.next();
-            lineScan.next();
-            result.add(lineScan.nextInt());
+            final String[] split = in.nextLine().split("\t");
+            result.add(Integer.parseInt(split[2]));
         }
         return result;
     }

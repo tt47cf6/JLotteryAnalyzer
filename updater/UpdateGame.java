@@ -137,9 +137,7 @@ public final class UpdateGame {
     
     private static long parseCurrency(final String theText) {
         String temp = theText;
-        if (temp.startsWith("$")) {
-            temp = temp.substring(1);
-        }
+        temp = temp.substring(temp.indexOf('$') + 1);
         while (temp.contains(",")) {
             final int index = temp.indexOf(',');
             temp = temp.substring(0, index) + temp.substring(index + 1);

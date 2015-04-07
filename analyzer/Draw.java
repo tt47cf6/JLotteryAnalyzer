@@ -178,7 +178,7 @@ public final class Draw {
                 out.append('0');
             }
             out.append(num);
-            out.append(SPACE);
+            out.append(TAB);
         }
         out.append(TAB);
         if (myBonusBall > 0) {
