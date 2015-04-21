@@ -8,7 +8,7 @@ This program updates itself with the most recent drawings online and shows you t
 This program came out of a request from a friend who was interested in computationally analysing lottery numbers. At that time, I had exactly one Java class under my belt and since then, this project has been a place to challenge myself with the Java language. 
 
 # Current Development
-This project is not under active development. The only work on this project now is to update the documentation and the code to the stylistic guidelines I now follow. In the midst of that, I have been leaving myself notes on where the program could be improved if I had the time needed to dedicate to it. Pull requests are welcome.
+This project is not under active development and does not reflect the current coding standards I have. The only work on this project now is to update the documentation and the code to standard stylistic guidelines and design patterns. In the midst of that, I have been leaving myself notes on where the program could be improved if I had the time needed to dedicate to it. Pull requests are welcome.
 
 # Application Structure
 This application scrapes the WA Lotto website to gather the most recent winning numbers, the date of the drawing, whether somebody won the jackpot, and how much was paid out in total. 
