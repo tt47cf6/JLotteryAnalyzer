@@ -6,14 +6,28 @@ import java.io.FileNotFoundException;
 /**
  * This interface establishes the needed getters for all Lottery classes. 
  * 
- * @author Robert Ogden
- * @version 2.0
+ * @author Robert
  */
 public interface Lottery {
     
+	/**
+	 * A constant identifier for Washington Lottery.
+	 */
     public static final String WA_LOTTO = "WA Lotto";
+    
+    /**
+     * A constant identifier for Mega Millions.
+     */
     public static final String MEGA_MILLIONS = "Mega Millions";
+    
+    /**
+     * A common identifier for PowerBall.
+     */
     public static final String POWERBALL = "PowerBall";
+    
+    /**
+     * The minimum year that all games can be found online for updating.
+     */
     public static final int MIN_COMMON_YEAR = 2009;
     
     /**
@@ -44,6 +58,11 @@ public interface Lottery {
      */
     String dataFile();
     
+    /**
+     * Get the base URL for updating this game.
+     * 
+     * @return the base update URL
+     */
     String updateURL();
 
     /**
