@@ -4,8 +4,7 @@ package analyzer;
  * A simple object that represents a single drawing, with bonus ball as
  * applicable.
  * 
- * @author Robert Ogden
- * @version 2.0
+ * @author Robert
  */
 public final class Draw {
 

@@ -1,6 +1,3 @@
-/*
- * Algorithms!
- */
 
 package analyzer;
 
@@ -26,12 +23,12 @@ import util.HotComparator;
  * This is a module class, containing only all the methods needed to run the
  * various algorithms of the program.
  * 
- * @author Robert Ogden
- * @version 2.0
+ * @author Robert
  */
 public final class Algorithims {
+	
 	/**
-	 * private constructor to prevent making an Algorithms object.
+	 * Private constructor to prevent making an Algorithms object.
 	 */
 	private Algorithims() {
 
